@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import axios from "axios";
 const AuthContext = createContext();
 
 export default AuthContext;
@@ -22,41 +23,50 @@ export const AuthProvider = ({ children }) => {
   let [message, setMessage] = useState("");
   let loginUser = async (e) => {
     e.preventDefault();
-    let response = await fetch("http://127.0.0.1:8000/api/token/", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        email: e.target.email.value,
-        password: e.target.password.value,
-      }),
+    // let response = await fetch("http://127.0.0.1:8000/api/token/", {
+    //   method: "POST",
+    //   headers: {
+    //     "content-type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     email: e.target.email.value,
+    //     password: e.target.password.value,
+    //   }),
+    // });
+    let response = await axios.post("http://127.0.0.1:8000/api/token/", {
+      email: e.target.email.value,
+      password: e.target.password.value,
     });
-    let data = null;
+    console.log(response);
+    let data = response.data;
     if (response.status === 200) {
-      data = await response.json();
       setAuthTokens(data);
       setUser(jwt_decode(data.access));
       localStorage.setItem("authTokens", JSON.stringify(data));
       navigate("profile");
     } else {
-      data = await response.json();
       setIsError(true);
       setMessage(data.detail);
     }
   };
 
   let updateToken = async () => {
-    let response = await fetch("http://127.0.0.1:8000/api/token/refresh/", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
+    // let response = await fetch("http://127.0.0.1:8000/api/token/refresh/", {
+    //   method: "POST",
+    //   headers: {
+    //     "content-type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     refresh: authTokens.refresh,
+    //   }),
+    // });
+    let response = await axios.post(
+      "http://127.0.0.1:8000/api/token/refresh/",
+      {
         refresh: authTokens.refresh,
-      }),
-    });
-    let data = await response.json();
+      }
+    );
+    let data = response.data;
     if (response.status === 200) {
       setAuthTokens(data);
       setUser(jwt_decode(data.access));

@@ -37,7 +37,6 @@ export const AuthProvider = ({ children }) => {
       email: e.target.email.value,
       password: e.target.password.value,
     });
-    console.log(response);
     let data = response.data;
     if (response.status === 200) {
       setAuthTokens(data);

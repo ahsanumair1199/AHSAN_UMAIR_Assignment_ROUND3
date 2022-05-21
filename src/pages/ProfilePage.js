@@ -36,7 +36,7 @@ const ProfilePage = () => {
     let formData = new FormData();
     formData.append("file", file);
     axios
-      .post("http://127.0.0.1:8000/api/csvfile/", formData)
+      .post("api/csvfile/", formData)
       .then((response) => {
         setData(response.data);
       })

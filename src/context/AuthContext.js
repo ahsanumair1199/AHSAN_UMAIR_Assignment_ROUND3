@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
     //     password: e.target.password.value,
     //   }),
     // });
-    let response = await axios.post("http://127.0.0.1:8000/api/token/", {
+    let response = await axios.post("api/token/", {
       email: e.target.email.value,
       password: e.target.password.value,
     });
@@ -60,12 +60,9 @@ export const AuthProvider = ({ children }) => {
     //     refresh: authTokens.refresh,
     //   }),
     // });
-    let response = await axios.post(
-      "http://127.0.0.1:8000/api/token/refresh/",
-      {
-        refresh: authTokens.refresh,
-      }
-    );
+    let response = await axios.post("api/token/refresh/", {
+      refresh: authTokens.refresh,
+    });
     let data = response.data;
     if (response.status === 200) {
       setAuthTokens(data);

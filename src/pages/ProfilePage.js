@@ -20,9 +20,7 @@ const ProfilePage = () => {
   const { user, logout, authTokens } = useContext(AuthContext);
   const [userData, setUserData] = useState({});
   let getUserData = async () => {
-    let response = await fetch(
-      `http://127.0.0.1:8000/api/users/${user.user_id}/`
-    );
+    let response = await fetch(`api/users/${user.user_id}/`);
     let response_data = await response.json();
     if (response.status === 200) {
       setUserData(response_data);
